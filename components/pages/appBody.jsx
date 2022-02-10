@@ -40,7 +40,7 @@ const searchArea = (
   </View>
 );
 
-function renderTemperatureView(
+function temperatureViewArea(
   cityNameState,
   temperatureInFarhrenheit,
   temperatureInCelcius
@@ -87,4 +87,4 @@ function getTemperatureView(temperatureInFarhrenheit, temperatureInCelcius) {
   return temperatureView;
 }
 
-export default renderTemperatureView;
+export default temperatureViewArea;

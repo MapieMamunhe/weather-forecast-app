@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 //Para pegar a localizacao do dispositivo
 import * as Location from "expo-location";
 import ConvertTemperature from "./components/classes/convertTemperature";
-import renderTemperatureView from "./components/pages/appBody";
+import temperatureViewArea from "./components/pages/appBody";
 import {
   setDefaultCityName,
   setDefaultTemperature,
@@ -37,7 +37,7 @@ export default function App() {
     return text;
   })();
 
-  const incompleteRendering = renderTemperatureView(cityNameState);
+  const incompleteRendering = temperatureViewArea(cityNameState);
   if (locationData === undefined) {
     return incompleteRendering;
   }
@@ -51,18 +51,18 @@ export default function App() {
   const { temperatureInFarhrenheit, temperatureInCelcius } =
     getTemperatures(temperatureData);
 
-  const completeRender = renderTemperatureView(
+  const completeRender = temperatureViewArea(
     cityNameState,
     temperatureInFarhrenheit,
     temperatureInCelcius
   );
   return completeRender;
 }
-
 function getTemperatures(temperatureData) {
   const temperatureInFarhrenheit = { ...temperatureData };
 
   let convert = new ConvertTemperature();
+
   const tempCelcius = convert.fahrenheitToCelcius(
     temperatureInFarhrenheit.temp
   );

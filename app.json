@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Um aplicativo construido como desafio para estágio na NITEKI",
+    "githubUrl": "https://github.com/MapieMamunhe/weather-forecast-app"
   }
 }
