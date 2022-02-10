@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, TextInput } from "react-native";
 import React, { useState, useEffect } from "react";
 //Para pegar a localizacao do dispositivo
 import * as Location from "expo-location";
@@ -34,16 +34,7 @@ export default function App() {
     return text;
   })();
   let completeRender;
-  const incompleteRendering = (
-    <View style={styles.container}>
-      <Text style={styles.title}>Previsão do tempo</Text>
-      <Text>
-        {cityNameState === null ? "Localização não definida" : cityNameState}
-      </Text>
-      <Text style={styles.textTemperature}>Temperatura</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  const incompleteRendering = renderTemperatureView(cityNameState);
   if (locationData === undefined) {
     return incompleteRendering;
   }
@@ -99,7 +90,7 @@ export default function App() {
     temp_maxCelcius,
   };
 
-  completeRender = completeRenderingTemperature(
+  completeRender = renderTemperatureView(
     cityNameState,
     temperatureInFarhrenheit,
     temperatureInCelcius
@@ -122,19 +113,63 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "200",
   },
+  textInput: {
+    borderColor: "black",
+    fontSize: 20,
+    width: 200,
+    borderWidth: 1,
+    margin: 5,
+  },
+  searchButton: {
+    height: 20,
+  },
 });
-function completeRenderingTemperature(
+
+const searchArea = (
+  <View>
+    <TextInput style={styles.textInput}></TextInput>
+    <Button
+      style={styles.searchButton}
+      color="#AAA9AD"
+      title="Pesquisar Cidade"
+      onPress={() => {}}
+    ></Button>
+  </View>
+);
+
+function renderTemperatureView(
   cityNameState,
   temperatureInFarhrenheit,
   temperatureInCelcius
 ) {
-  const { temp, temp_min, temp_max } = temperatureInFarhrenheit;
-  const { tempCelcius, temp_minCelcius, temp_maxCelcius } =
-    temperatureInCelcius;
+  let temperatureView = <Text style={styles.textTemperature}>Temperatura</Text>;
+
+  //Verifica se fara uma renderizacao com dados completos ou nao
+  if (cityNameState !== null && temperatureInFarhrenheit !== undefined) {
+    temperatureView = getTemperatureView(
+      temperatureInFarhrenheit,
+      temperatureInCelcius
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Previsão do tempo</Text>
-      <Text>{cityNameState}</Text>
+      <Text style={styles.textTemperature}>
+        {cityNameState === null ? "Localização não definida" : cityNameState}
+      </Text>
+      {temperatureView}
+      {searchArea}
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+function getTemperatureView(temperatureInFarhrenheit, temperatureInCelcius) {
+  const { temp, temp_min, temp_max } = temperatureInFarhrenheit;
+  const { tempCelcius, temp_minCelcius, temp_maxCelcius } =
+    temperatureInCelcius;
+  const temperatureView = (
+    <View>
       <Text style={styles.textTemperature}>
         Temperatura Actual: {temp}F || {tempCelcius} C
       </Text>
@@ -144,7 +179,7 @@ function completeRenderingTemperature(
       <Text style={styles.textTemperature}>
         Temperatura Max: {temp_max}F || {temp_maxCelcius} C
       </Text>
-      <StatusBar style="auto" />
     </View>
   );
+  return temperatureView;
 }
