@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useState, useEffect } from "react";
 //Para pegar a localizacao do dispositivo
 import * as Location from "expo-location";
+import ConvertTemperature from "./components/classes/convertTemperature";
+
 export default function App() {
   const [cityNameState, setCityName] = useState(null);
   const [location, setLocation] = useState(null);
@@ -79,19 +81,28 @@ export default function App() {
 
   if (temperatureData === null) return incompleteRendering;
 
-  const { temp, temp_min, temp_max } = temperatureData;
+  const temperatureInFarhrenheit = { ...temperatureData };
 
-  completeRender = (
-    <View style={styles.container}>
-      <Text style={styles.title}>Previsão do tempo</Text>
-      <Text>{cityNameState}</Text>
-      <Text style={styles.textTemperature}>Temperatura Actual: {temp}F</Text>
-      <Text style={styles.textTemperature}>
-        Temperatura Minima: {temp_min}F
-      </Text>
-      <Text style={styles.textTemperature}>Temperatura Max: {temp_max}F</Text>
-      <StatusBar style="auto" />
-    </View>
+  let convert = new ConvertTemperature();
+  const tempCelcius = convert.fahrenheitToCelcius(
+    temperatureInFarhrenheit.temp
+  );
+  const temp_minCelcius = convert.fahrenheitToCelcius(
+    temperatureInFarhrenheit.temp_min
+  );
+  const temp_maxCelcius = convert.fahrenheitToCelcius(
+    temperatureInFarhrenheit.temp_max
+  );
+  const temperatureInCelcius = {
+    tempCelcius,
+    temp_minCelcius,
+    temp_maxCelcius,
+  };
+
+  completeRender = completeRenderingTemperature(
+    cityNameState,
+    temperatureInFarhrenheit,
+    temperatureInCelcius
   );
   return completeRender;
 }
@@ -112,3 +123,28 @@ const styles = StyleSheet.create({
     fontWeight: "200",
   },
 });
+function completeRenderingTemperature(
+  cityNameState,
+  temperatureInFarhrenheit,
+  temperatureInCelcius
+) {
+  const { temp, temp_min, temp_max } = temperatureInFarhrenheit;
+  const { tempCelcius, temp_minCelcius, temp_maxCelcius } =
+    temperatureInCelcius;
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Previsão do tempo</Text>
+      <Text>{cityNameState}</Text>
+      <Text style={styles.textTemperature}>
+        Temperatura Actual: {temp}F || {tempCelcius} C
+      </Text>
+      <Text style={styles.textTemperature}>
+        Temperatura Minima: {temp_min}F || {temp_minCelcius} C
+      </Text>
+      <Text style={styles.textTemperature}>
+        Temperatura Max: {temp_max}F || {temp_maxCelcius} C
+      </Text>
+      <StatusBar style="auto" />
+    </View>
+  );
+}
