@@ -1,10 +1,13 @@
 # weather-forecast-app
 Desafio para o estagio na NITEKI
-# Requisitos
+# Requisitos Gerais
 - Conexao a Internet
 - Serviço de Localização
 - SmartPhone (Android Preferencial) ou Computador(Navegador Firefox Preferencial)
-  - Expo GO no SmartPhone
+### Requisitos para SmartPhone
+  - Expo GO
+### Requisitos para Computador
+  - NodeJs Instalado e actualizado
   - Expo CLI no Computador com comando  npm i -g expo-cli
 
 # Correndo o App
