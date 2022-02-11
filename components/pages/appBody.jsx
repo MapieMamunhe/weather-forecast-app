@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "silver",
   },
   title: {
     fontSize: 40,
@@ -33,7 +34,7 @@ const searchArea = (
     <TextInput style={styles.textInput}></TextInput>
     <Button
       style={styles.searchButton}
-      color="#AAA9AD"
+      color="grey"
       title="Pesquisar Cidade"
       onPress={() => {}}
     ></Button>
